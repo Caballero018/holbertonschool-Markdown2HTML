@@ -4,7 +4,7 @@ import sys
 import os
 
 
-def md_to_html(markdown, html):
+def headings(markdown, html):
     """Function that parses the Headings Markdown syntax to generate HTML."""
 
     "Read markdown file"
@@ -12,6 +12,8 @@ def md_to_html(markdown, html):
         lines = f.readlines()
 
     for line in lines:
+        if line[0] != '#':
+            return
         hash = txt = ''
         for character in line:
             "Number of hash"
@@ -39,6 +41,6 @@ if __name__ == "__main__":
         print("Missing {}".format(args[1]), file=sys.stderr)
         sys.exit(1)
 
-    md_to_html(args[1], args[2])
+    headings(args[1], args[2])
 
     sys.exit(0)
