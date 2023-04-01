@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-"Script markdown2html.py that takes an argument 2 strings"
+"""Script markdown2html.py that takes an argument 2 strings"""
 import sys
 import os
+
 
 args = sys.argv
 if len(args) < 3:
