@@ -4,13 +4,8 @@ import sys
 import os
 
 
-def headings(markdown, html):
+def headings(lines, html):
     """Function that parses the Headings Markdown syntax to generate HTML."""
-
-    "Read markdown file"
-    with open(markdown) as f:
-        lines = f.readlines()
-
     for line in lines:
         hash = txt = ''
         for character in line:
@@ -29,6 +24,29 @@ def headings(markdown, html):
                     ))
 
 
+def unordered_list(lines, html):
+    """Function that parses unordered listing syntax for generating HTML"""
+    ul = []
+    for line in lines:
+        li = txt = ''
+        for character in line:
+            "Number of li"
+            if character == '-':
+                li += character
+            "Text without numerals"
+            if character != '-':
+                txt += character
+        if len(li) > 0 and len(txt) > 0:
+            ul.append("<li>{txt}</li>\n".format(txt=txt[1:-1]))
+
+    with open(html, 'a') as f:
+        "Write in html file"
+        f.write("<ul>\n")
+        for u in ul:
+            f.write("{}".format(u))
+        f.write("</ul>\n")
+
+
 if __name__ == "__main__":
     args = sys.argv
     if len(args) < 3:
@@ -39,6 +57,11 @@ if __name__ == "__main__":
         print("Missing {}".format(args[1]), file=sys.stderr)
         sys.exit(1)
 
-    headings(args[1], args[2])
+    "Read markdown file"
+    with open(args[1]) as f:
+        lines = f.readlines()
+
+    headings(lines, args[2])
+    unordered_list(lines, args[2])
 
     sys.exit(0)
