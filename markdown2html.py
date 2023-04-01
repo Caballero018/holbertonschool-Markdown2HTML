@@ -12,8 +12,6 @@ def headings(markdown, html):
         lines = f.readlines()
 
     for line in lines:
-        if line[0] != '#':
-            return
         hash = txt = ''
         for character in line:
             "Number of hash"
