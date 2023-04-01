@@ -23,10 +23,10 @@ def md_to_html(markdown, html):
 
         "Write in html file"
         with open(html, 'a') as f:
-            f.write("<h{len_h}>{txt}<h{len_h}>\n".format(
-                len_h=len(hash), txt=txt[1:-1]
-                ))
-
+            if len(character) > 0 and len(hash) > 0:
+                f.write("<h{len_h}>{txt}</h{len_h}>\n".format(
+                    len_h=len(hash), txt=txt[1:-1]
+                    ))
 
 if __name__ == "__main__":
     args = sys.argv
