@@ -28,6 +28,7 @@ def md_to_html(markdown, html):
                     len_h=len(hash), txt=txt[1:-1]
                     ))
 
+
 if __name__ == "__main__":
     args = sys.argv
     if len(args) < 3:
