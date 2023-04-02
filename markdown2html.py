@@ -23,26 +23,43 @@ def headings(line, html):
                 ))
 
 
-def unordered_list(line, html):
+def reded_list(line, html):
     """Function that parses unordered listing syntax for generating HTML"""
     li = txt = ''
-    for character in line:
-        "Number of li"
-        if character == '-':
-            li += character
-        "Text without numerals"
-        if character != '-':
-            txt += character
+    "Case unordered list"
+    if line[0] == '-':
+        for character in line:
+            "Number of li"
+            if character == '-':
+                li += character
+            "Text without numerals"
+            if character != '-':
+                txt += character
 
-    if len(li) > 0 and len(txt) > 0:
-        with open(html, 'a') as f:
-            "Write in html file"
-            f.write("<li>{txt}</li>\n".format(txt=txt[1:-1]))
+        if len(li) > 0 and len(txt) > 0:
+            with open(html, 'a') as f:
+                "Write in html file"
+                f.write("<li>{txt}</li>\n".format(txt=txt[1:-1]))
+
+    "Case ordered list"
+    if line[0] == '*':
+        for character in line:
+            "Number of li"
+            if character == '*':
+                li += character
+            "Text without numerals"
+            if character != '*':
+                txt += character
+
+        if len(li) > 0 and len(txt) > 0:
+            with open(html, 'a') as f:
+                "Write in html file"
+                f.write("<li>{txt}</li>\n".format(txt=txt[1:-1]))
 
 
 def switch(lines, html):
     """Switch in the case"""
-    ul = closed_ul = 0
+    ul = closed_ul = ol = closed_ol = 0
     for i in range(len(lines)):
         "Case headings"
         if lines[i][0] == '#':
@@ -64,17 +81,49 @@ def switch(lines, html):
                 with open(html, 'a') as f:
                     "Write in html file"
                     f.write("<ul>\n")
-            unordered_list(lines[i], html)
+            reded_list(lines[i], html)
             if closed_ul == 1:
                 with open(html, 'a') as f:
                     "Write in html file"
                     f.write("</ul>\n")
             ul = 1
             closed_ul = 0
+
+        "Case ordered list"
+        if lines[i][0] == '*':
+            if i > 0:
+                try:
+                    if lines[i - 1][0] != '*' or lines[i + 1][0] != '*':
+                        ol = 0
+                    if lines[i + 1] == '\n':
+                        ol = 1
+                    if lines[i + 1][0] != '*':
+                        closed_ol = 1
+                except IndexError:
+                    i = len(lines) - 1
+            if ol == 0:
+                with open(html, 'a') as f:
+                    "Write in html file"
+                    f.write("<ol>\n")
+            reded_list(lines[i], html)
+            if closed_ol == 1:
+                with open(html, 'a') as f:
+                    "Write in html file"
+                    f.write("</ol>\n")
+            ol = 1
+            closed_ol = 0
+
+    "Case unordered list"
     if lines[i][0] == '-':
         with open(html, 'a') as f:
             "Write in html file"
             f.write("</ul>\n")
+
+    "Case ordered list"
+    if lines[i][0] == '*':
+        with open(html, 'a') as f:
+            "Write in html file"
+            f.write("</ol>\n")
 
 
 if __name__ == "__main__":
