@@ -23,39 +23,58 @@ def headings(line, html):
                 ))
 
 
-def unordered_list(lines, html):
+def unordered_list(line, html):
     """Function that parses unordered listing syntax for generating HTML"""
-    ul = []
-    for line in lines:
-        li = txt = ''
-        for character in line:
-            "Number of li"
-            if character == '-':
-                li += character
-            "Text without numerals"
-            if character != '-':
-                txt += character
-        if len(li) > 0 and len(txt) > 0:
-            ul.append("<li>{txt}</li>\n".format(txt=txt[1:-1]))
+    li = txt = ''
+    for character in line:
+        "Number of li"
+        if character == '-':
+            li += character
+        "Text without numerals"
+        if character != '-':
+            txt += character
 
-    with open(html, 'a') as f:
-        "Write in html file"
-        f.write("<ul>\n")
-        for u in ul:
-            f.write("{}".format(u))
-        f.write("</ul>\n")
+    if len(li) > 0 and len(txt) > 0:
+        with open(html, 'a') as f:
+            "Write in html file"
+            f.write("<li>{txt}</li>\n".format(txt=txt[1:-1]))
 
 
 def switch(lines, html):
     """Switch in the case"""
-    ul = 0
-    for line in lines:
-        if line[0] == '#':
-            headings(line, html)
-        if line[0] == '-':
+    ul = closed_ul = 0
+    for i in range(len(lines)):
+        "Case headings"
+        if lines[i][0] == '#':
+            headings(lines[i], html)
+
+        "Case unordered list"
+        if lines[i][0] == '-':
+            if i > 0:
+                try:
+                    if lines[i - 1][0] != '-' or lines[i + 1][0] != '-':
+                        ul = 0
+                    if lines[i + 1] == '\n':
+                        ul = 1
+                    if lines[i + 1][0] != '-':
+                        closed_ul = 1
+                except IndexError:
+                    i = len(lines) - 1
             if ul == 0:
-                unordered_list(lines, html)
-            ul += 1
+                with open(html, 'a') as f:
+                    "Write in html file"
+                    f.write("<ul>\n")
+            unordered_list(lines[i], html)
+            if closed_ul == 1:
+                with open(html, 'a') as f:
+                    "Write in html file"
+                    f.write("</ul>\n")
+            ul = 1
+            closed_ul = 0
+    if lines[i][0] == '-':
+        with open(html, 'a') as f:
+            "Write in html file"
+            f.write("</ul>\n")
 
 
 if __name__ == "__main__":
