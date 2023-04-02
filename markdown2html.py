@@ -4,24 +4,23 @@ import sys
 import os
 
 
-def headings(lines, html):
+def headings(line, html):
     """Function that parses the Headings Markdown syntax to generate HTML."""
-    for line in lines:
-        hash = txt = ''
-        for character in line:
-            "Number of hash"
-            if character == '#':
-                hash += character
-            "Text without numerals"
-            if character != '#':
-                txt += character
+    hash = txt = ''
+    for character in line:
+        "Number of hash"
+        if character == '#':
+            hash += character
+        "Text without numerals"
+        if character != '#':
+            txt += character
 
-        "Write in html file"
-        with open(html, 'a') as f:
-            if len(character) > 0 and len(hash) > 0:
-                f.write("<h{len_h}>{txt}</h{len_h}>\n".format(
-                    len_h=len(hash), txt=txt[1:-1]
-                    ))
+    "Write in html file"
+    with open(html, 'a') as f:
+        if len(character) > 0 and len(hash) > 0:
+            f.write("<h{len_h}>{txt}</h{len_h}>\n".format(
+                len_h=len(hash), txt=txt[1:-1]
+                ))
 
 
 def unordered_list(lines, html):
@@ -47,6 +46,18 @@ def unordered_list(lines, html):
         f.write("</ul>\n")
 
 
+def switch(lines, html):
+    """Switch in the case"""
+    ul = 0
+    for line in lines:
+        if line[0] == '#':
+            headings(line, html)
+        if line[0] == '-':
+            if ul == 0:
+                unordered_list(lines, html)
+            ul += 1
+
+
 if __name__ == "__main__":
     args = sys.argv
     if len(args) < 3:
@@ -61,7 +72,6 @@ if __name__ == "__main__":
     with open(args[1]) as f:
         lines = f.readlines()
 
-    headings(lines, args[2])
-    unordered_list(lines, args[2])
+    switch(lines, args[2])
 
     sys.exit(0)
