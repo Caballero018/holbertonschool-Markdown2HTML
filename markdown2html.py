@@ -56,6 +56,7 @@ def reded_list(line, html):
                 "Write in html file"
                 f.write("<li>{txt}</li>\n".format(txt=txt[1:-1]))
 
+
 def switch(lines, html):
     """Switch in the case"""
     ul = closed_ul = ol = closed_ol = 0
@@ -112,7 +113,7 @@ def switch(lines, html):
                     f.write("</ol>\n")
             ol = 1
             closed_ol = 0
-        
+
         "Case paraghap/text"
         if lines[i][0] != '-' and lines[i][0] != '*' and lines[i][0] != '#':
             with open(html, 'a') as f:
@@ -125,7 +126,7 @@ def switch(lines, html):
                         closed_p = 1
                     if lines[i+1][0] != '\n':
                         br = 1
-                    
+
                 except IndexError:
                     i = len(lines) - 1
                 if lines[i][0] != '\n':
@@ -138,8 +139,6 @@ def switch(lines, html):
                         f.write("</p>\n")
                 p = 1
                 closed_p = br = 0
-
-        
 
     with open(html, 'a') as f:
         "Case unordered list"
@@ -156,6 +155,7 @@ def switch(lines, html):
         if lines[i][0] != '-' and lines[i][0] != '*' and lines[i][0] != '#':
             "Write in html file"
             f.write("</p>\n")
+
 
 if __name__ == "__main__":
     args = sys.argv
