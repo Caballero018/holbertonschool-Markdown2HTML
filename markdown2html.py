@@ -56,10 +56,10 @@ def reded_list(line, html):
                 "Write in html file"
                 f.write("<li>{txt}</li>\n".format(txt=txt[1:-1]))
 
-
 def switch(lines, html):
     """Switch in the case"""
     ul = closed_ul = ol = closed_ol = 0
+    p = closed_p = br = 0
     for i in range(len(lines)):
         "Case headings"
         if lines[i][0] == '#':
@@ -112,19 +112,50 @@ def switch(lines, html):
                     f.write("</ol>\n")
             ol = 1
             closed_ol = 0
+        
+        "Case paraghap/text"
+        if lines[i][0] != '-' and lines[i][0] != '*' and lines[i][0] != '#':
+            with open(html, 'a') as f:
+                "Write in html file"
+                try:
+                    if i > 0:
+                        if lines[i-1] == '\n':
+                            p = 0
+                    if lines[i+1] == '\n':
+                        closed_p = 1
+                    if lines[i+1][0] != '\n':
+                        br = 1
+                    
+                except IndexError:
+                    i = len(lines) - 1
+                if lines[i][0] != '\n':
+                    if p == 0:
+                        f.write("<p>\n")
+                    f.write("{txt}".format(txt=lines[i]))
+                    if br == 1:
+                        f.write("<br/>\n")
+                    if closed_p == 1:
+                        f.write("</p>\n")
+                p = 1
+                closed_p = br = 0
 
-    "Case unordered list"
-    if lines[i][0] == '-':
-        with open(html, 'a') as f:
+        
+
+    with open(html, 'a') as f:
+        "Case unordered list"
+        if lines[i][0] == '-':
             "Write in html file"
             f.write("</ul>\n")
 
-    "Case ordered list"
-    if lines[i][0] == '*':
-        with open(html, 'a') as f:
+        "Case ordered list"
+        if lines[i][0] == '*':
             "Write in html file"
             f.write("</ol>\n")
 
+        "Case paraghap/text"
+        if lines[i][0] != '-' and lines[i][0] != '*' and lines[i][0] != '#':
+            "Write in html file"
+            f.write("</p>\n")
 
 if __name__ == "__main__":
     args = sys.argv
