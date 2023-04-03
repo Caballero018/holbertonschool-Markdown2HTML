@@ -80,10 +80,10 @@ def bold(line):
                 underscore += 1
                 closed_under += 1
             if underscore == 1:
-                new_line += '<b>'
+                new_line += '<em>'
                 underscore /= 2
             if closed_under == 2:
-                new_line += '</b>'
+                new_line += '</em>'
                 underscore = closed_under = 0
 
             if line[i] != '*' and line[i] != '_' or line[i] == ' ' or\
