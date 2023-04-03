@@ -57,10 +57,51 @@ def reded_list(line, html):
                 f.write("<li>{txt}</li>\n".format(txt=txt[1:-1]))
 
 
+def bold(line):
+    """Bold in the case"""
+    asterisk = closed_stsk = 0
+    underscore = closed_under = 0
+    new_line = ''
+    for i in range(len(line)):
+        try:
+            "Case Asterisk"
+            if line[i] == '*' and line[i+1] == '*':
+                asterisk += 1
+                closed_stsk += 1
+            if asterisk == 1:
+                new_line += '<b>'
+                asterisk /= 2
+            if closed_stsk == 2:
+                new_line += '</b>'
+                asterisk = closed_stsk = 0
+
+            "Case underscore"
+            if line[i] == '_' and line[i+1] == '_':
+                underscore += 1
+                closed_under += 1
+            if underscore == 1:
+                new_line += '<b>'
+                underscore /= 2
+            if closed_under == 2:
+                new_line += '</b>'
+                underscore = closed_under = 0
+
+            if line[i] != '*' and line[i] != '_' or line[i] == ' ' or\
+                (line[i] == '*' and line[i+1] != '*' and line[i-1] != '*')\
+                    or (line[i] == '_' and line[i+1] != '_' and
+                        line[i-1] != '_'):
+                new_line += line[i]
+
+        except IndexError:
+            i = len(line) - 1
+    return new_line
+
+
 def switch(lines, html):
     """Switch in the case"""
     ul = closed_ul = ol = closed_ol = 0
     p = closed_p = br = 0
+    lines = [bold(line) for line in lines]
     for i in range(len(lines)):
         "Case headings"
         if lines[i][0] == '#':
