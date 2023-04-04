@@ -109,7 +109,8 @@ def remove_c(line):
                 i += 3
             if line[i] == ')' and line[i+1] == ')':
                 c = 0
-            if c == 1 and line[i] != '(' and line[i] != 'c' and line[i] != 'C':
+            if c == 1 and line[i] != '(' and line[i] != ')' and\
+                    line[i] != 'c' and line[i] != 'C':
                 li += line[i]
             if c == 0:
                 li += ''
@@ -125,7 +126,7 @@ def remove_c(line):
             if c == 1:
                 i += len(li) + 3
             if line[i] != '(' and line[i+1] != '(' and line[i] != ')'\
-                    and line[i+1] != ')' or line[i] == ' ':
+                    and line[i+1] != ')' or line[i] == ' ' or line[i] == '_':
                 ne += line[i]
         except IndexError:
             i = len(line) - 1
@@ -160,7 +161,7 @@ def md5(line):
             if c == 1:
                 i += len(li) + 2
             if line[i] != '[' and line[i+1] != '[' and line[i] != ']' and\
-                    line[i+1] != ']' or line[i] == ' ':
+                    line[i+1] != ']' or line[i] == ' ' or line[i] == '_':
                 ne += line[i]
         except IndexError:
             i = len(line) - 1
@@ -173,10 +174,9 @@ def switch(lines, html):
     """Switch in the case"""
     ul = closed_ul = ol = closed_ol = 0
     p = closed_p = br = 0
-    lines = [bold(remove_c(md5(line))) for line in lines]
+    lines = [(bold(remove_c(md5(line)))) for line in lines]
     for i in range(len(lines)):
         "Case headings"
-        md5(lines[i])
         if lines[i][0] == '#':
             headings(lines[i], html)
 
