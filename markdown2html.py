@@ -123,7 +123,7 @@ def remove_c(line):
                 c = 1
             if c == 1:
                 i += len(li) + 3
-            if line[i] != '(' and line[i+1] != '(' and line[i] != ')' and line[i+1] != ')':
+            if line[i] != '(' and line[i+1] != '(' and line[i] != ')' and line[i+1] != ')' or line[i] == ' ':
                 ne += line[i]
         except IndexError:
             i = len(line) - 1
