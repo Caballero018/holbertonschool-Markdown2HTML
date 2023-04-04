@@ -97,12 +97,48 @@ def bold(line):
     return new_line
 
 
+"Function that remove the 'c' or 'C'"
+def remove_c(line):
+    li = ne = ''
+    c = 0
+    for i in range(len(line)):
+        try:
+            if line[i] == '(' and line[i+1] == '(':
+                c = 1
+                i+=3
+            if line[i] == ')' and line[i+1] == ')':
+                c = 0
+            if c == 1 and line[i] != '(' and line[i] != 'c' and line[i] != 'C':
+                li += line[i]
+            if c == 0:
+                li += ''
+        except IndexError:
+            i = len(line) - 1
+
+    c = 0
+    for i in range(len(line)):
+        try:
+            if line[i] == '(' and line[i+1] == '(':
+                ne += li
+                c = 1
+            if c == 1:
+                i += len(li) + 4
+            if line[i] != '(' and line[i+1] != '(' and line[i] != ')' and line[i+1] != ')':
+                ne += line[i]
+        except IndexError:
+            i = len(line) - 1
+    ne += '\n'
+    return ne
+
+
+
 def switch(lines, html):
     """Switch in the case"""
     ul = closed_ul = ol = closed_ol = 0
     p = closed_p = br = 0
-    lines = [bold(line) for line in lines]
+    lines = [bold(remove_c(line)) for line in lines]
     for i in range(len(lines)):
+        remove_c(lines[i])
         "Case headings"
         if lines[i][0] == '#':
             headings(lines[i], html)
