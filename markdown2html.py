@@ -123,12 +123,11 @@ def remove_c(line):
                 c = 1
             if c == 1:
                 i += len(li) + 3
-            if line[i] != '(' and line[i+1] != '(' and line[i] != ')' and line[i+1] != ')' or line[i] == ' ':
+            if line[i] != '(' and line[i+1] != '(' and line[i] != ')' and line[i+1] != ')':
                 ne += line[i]
         except IndexError:
             i = len(line) - 1
     ne += '\n'
-    print(ne)
     return ne
 
 
@@ -137,9 +136,8 @@ def switch(lines, html):
     """Switch in the case"""
     ul = closed_ul = ol = closed_ol = 0
     p = closed_p = br = 0
-    lines = [bold(line) for line in lines]
+    lines = [bold(remove_c(line)) for line in lines]
     for i in range(len(lines)):
-        remove_c(lines[i])
         "Case headings"
         if lines[i][0] == '#':
             headings(lines[i], html)
