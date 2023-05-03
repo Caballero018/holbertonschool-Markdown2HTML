@@ -65,7 +65,6 @@ Syntax: (you can assume it will be strictly this syntax)
 |`#### Heading level 4`| `<h4>Heading level 1</h4>`|
 |`##### Heading level 5`| `<h5>Heading level 1</h5>`|
 |`###### Heading level 6`| `<h6>Heading level 1</h6>`|
-| ---- | --- |
 
 ~~~
 guillaume@vagrant:~/$ cat README.md
