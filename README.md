@@ -58,6 +58,7 @@ Improve markdown2html.py by parsing Headings Markdown syntax for generating HTML
 Syntax: (you can assume it will be strictly this syntax)
 
 |Markdown | HTML generated |
+| ---- | --- |
 |`# Heading level 1`| `<h1>Heading level 1</h1>`|
 |`## Heading level 2`| `<h2>Heading level 1</h2>`|
 |`### Heading level 3`| `<h3>Heading level 1</h3>`|
